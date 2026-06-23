@@ -1776,7 +1776,7 @@ async function deployCdk(state: SetupState): Promise<void> {
   info('Bootstrapping CDK environment...');
   try {
     const bootstrapOutput = execSync(
-      `npx cdk bootstrap aws://${state.accountId}/${state.region} --no-cli-pager`,
+      `npx cdk bootstrap aws://${state.accountId}/${state.region}`,
       { cwd: cdkDir, encoding: 'utf-8', stdio: 'pipe', env: { ...process.env, AWS_REGION: state.region, AWS_DEFAULT_REGION: state.region, CDK_DEFAULT_REGION: state.region, CDK_DEFAULT_ACCOUNT: state.accountId } }
     );
     // Check if output contains success indicators
@@ -1795,7 +1795,7 @@ async function deployCdk(state: SetupState): Promise<void> {
       // Retry with explicit --trust and --cloudformation-execution-policies
       try {
         execSync(
-          `npx cdk bootstrap aws://${state.accountId}/${state.region} --trust ${state.accountId} --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess --no-cli-pager`,
+          `npx cdk bootstrap aws://${state.accountId}/${state.region} --trust ${state.accountId} --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess`,
           { cwd: cdkDir, encoding: 'utf-8', stdio: 'inherit', env: { ...process.env, AWS_REGION: state.region, AWS_DEFAULT_REGION: state.region, CDK_DEFAULT_REGION: state.region, CDK_DEFAULT_ACCOUNT: state.accountId } }
         );
         success('CDK environment bootstrapped (retry succeeded)');
