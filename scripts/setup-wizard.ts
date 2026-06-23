@@ -1772,6 +1772,11 @@ function selectMatchingTools(
 async function deployCdk(state: SetupState): Promise<void> {
   const cdkDir = path.resolve(__dirname, '../infrastructure/cdk');
 
+  // Install dependencies
+  info('Installing CDK dependencies...');
+  execSync('npm install --silent', { cwd: cdkDir, encoding: 'utf-8', stdio: 'pipe' });
+  success('Dependencies installed');
+
   // Bootstrap (idempotent)
   info('Bootstrapping CDK environment...');
   try {
@@ -1808,11 +1813,6 @@ async function deployCdk(state: SetupState): Promise<void> {
       }
     }
   }
-
-  // Install dependencies
-  info('Installing CDK dependencies...');
-  execSync('npm install --silent', { cwd: cdkDir, encoding: 'utf-8', stdio: 'pipe' });
-  success('Dependencies installed');
 
   // Build deploy command — enforce --require-approval broadening for production safety
   const stackName = `HealthEventAnalyzerStack-${state.region}`;
